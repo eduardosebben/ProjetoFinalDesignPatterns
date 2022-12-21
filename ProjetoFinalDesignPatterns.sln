@@ -5,7 +5,7 @@ VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Command_Facthory_Iterator_Observer_Singleton", "ProjetoFinalDesignPatterns\Command_Facthory_Iterator_Observer_Singleton.csproj", "{33B17B72-6EC7-447F-9E33-96B4A992D96E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxy", "Proxy\Proxy.csproj", "{866979BA-7A31-4295-8AA0-A8EB3A9F1295}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxy_Visitor_State_AbstractFactory_Adapter", "Proxy\Proxy_Visitor_State_AbstractFactory_Adapter.csproj", "{866979BA-7A31-4295-8AA0-A8EB3A9F1295}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
