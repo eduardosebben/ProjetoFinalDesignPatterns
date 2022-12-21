@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoFinalDesignPatterns", "ProjetoFinalDesignPatterns\ProjetoFinalDesignPatterns.csproj", "{33B17B72-6EC7-447F-9E33-96B4A992D96E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Command_Facthory_Iterator_Observer_Singleton", "ProjetoFinalDesignPatterns\Command_Facthory_Iterator_Observer_Singleton.csproj", "{33B17B72-6EC7-447F-9E33-96B4A992D96E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Proxy", "Proxy\Proxy.csproj", "{866979BA-7A31-4295-8AA0-A8EB3A9F1295}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{33B17B72-6EC7-447F-9E33-96B4A992D96E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33B17B72-6EC7-447F-9E33-96B4A992D96E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33B17B72-6EC7-447F-9E33-96B4A992D96E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{866979BA-7A31-4295-8AA0-A8EB3A9F1295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{866979BA-7A31-4295-8AA0-A8EB3A9F1295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{866979BA-7A31-4295-8AA0-A8EB3A9F1295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{866979BA-7A31-4295-8AA0-A8EB3A9F1295}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
