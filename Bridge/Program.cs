@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bridge_Builder
+namespace Bridge_Builder_Prototype_Composite
 {
     //Bridge------------------------------
     // A Abstração define a interface para a parte "controle" dos dois
@@ -177,6 +177,157 @@ namespace Bridge_Builder
             this._builder.Build2();
         }
     }
+
+    //prototype-----------------------
+    public class Person
+    {
+        public int Idade;
+        public DateTime Aniversario;
+        public string Nome;
+        public IdInfo IdInfo;
+
+        public Person ShallowCopy()
+        {
+            return (Person)this.MemberwiseClone();
+        }
+
+        public Person DeepCopy()
+        {
+            Person clone = (Person)this.MemberwiseClone();
+            clone.IdInfo = new IdInfo(IdInfo.IdNumber);
+            clone.Nome = String.Copy(Nome);
+            return clone;
+        }
+    }
+
+    public class IdInfo
+    {
+        public int IdNumber;
+
+        public IdInfo(int idNumber)
+        {
+            this.IdNumber = idNumber;
+        }
+    }
+
+    //Compiste --------------------------------------------
+
+    // A classe base Component declara operações comuns para ambos simples e
+    // objetos complexos de uma composição.
+    abstract class Component
+    {
+        public Component() { }
+
+        // O componente base pode implementar algum comportamento padrão ou deixá-lo para
+        // classes concretas (declarando o método que contém o comportamento como
+        // "resumo").
+        public abstract string Operation();
+
+        // Em alguns casos, seria benéfico definir o controle de filhos
+        // operações diretamente na classe Component base. Desta forma, você não vai
+        // precisa expor quaisquer classes de componentes concretos ao código do cliente,
+        // mesmo durante a montagem da árvore de objetos. A desvantagem é que esses
+        // os métodos estarão vazios para os componentes de nível folha.
+        public virtual void Add(Component component)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Remove(Component component)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Você pode fornecer um método que permite que o código do cliente descubra se
+        // um componente pode ter filhos.
+        public virtual bool IsComposite()
+        {
+            return true;
+        }
+    }
+
+    // A classe Leaf representa os objetos finais de uma composição. Uma folha não pode
+    // tem filhos.
+    //
+    // Normalmente, são os objetos Leaf que fazem o trabalho real, enquanto Composite
+    // os objetos apenas delegam para seus subcomponentes.
+    class Leaf : Component
+    {
+        public override string Operation()
+        {
+            return "Leaf";
+        }
+
+        public override bool IsComposite()
+        {
+            return false;
+        }
+    }
+
+    // A classe Composite representa os componentes complexos que podem ter
+    // crianças. Normalmente, os objetos Composite delegam o trabalho real para
+    // seus filhos e depois "soma" o resultado.
+    class Composite : Component
+    {
+        protected List<Component> _children = new List<Component>();
+
+        public override void Add(Component component)
+        {
+            this._children.Add(component);
+        }
+
+        public override void Remove(Component component)
+        {
+            this._children.Remove(component);
+        }
+
+        // O Composite executa sua lógica primária de uma maneira particular. Isto
+        // percorre recursivamente todos os seus filhos, coletando e
+        // somando seus resultados. Como os filhos do composto passam por esses
+        // chama seus filhos e assim por diante, toda a árvore de objetos é
+        // percorrido como resultado.
+        public override string Operation()
+        {
+            int i = 0;
+            string result = "Branch(";
+
+            foreach (Component component in this._children)
+            {
+                result += component.Operation();
+                if (i != this._children.Count - 1)
+                {
+                    result += "+";
+                }
+                i++;
+            }
+
+            return result + ")";
+        }
+    }
+
+    class Client2
+    {
+        // O código do cliente funciona com todos os componentes via base
+        //interface.
+        public void ClientCode(Component leaf)
+        {
+            Console.WriteLine($"RESULT: {leaf.Operation()}\n");
+        }
+
+        // Graças ao fato de que as operações de gerenciamento de filhos são declaradas
+        // na classe Component base, o código do cliente pode funcionar com qualquer
+        // componente, simples ou complexo, sem depender do seu concreto
+        // Aulas.
+        public void ClientCode2(Component component1, Component component2)
+        {
+            if (component1.IsComposite())
+            {
+                component1.Add(component2);
+            }
+
+            Console.WriteLine($"RESULT: {component1.Operation()}");
+        }
+    }
     public class Program
     {
         static void Main(string[] args)
@@ -213,6 +364,72 @@ namespace Bridge_Builder
             Console.WriteLine("Customizar produto:");
             builder.Build1();
             Console.Write(builder.GetProduto().ListarPartes());
+
+            //prototype
+            Person p1 = new Person();
+            p1.Idade = 42;
+            p1.Aniversario = Convert.ToDateTime("1977-01-01");
+            p1.Nome = "Jack Daniels";
+            p1.IdInfo = new IdInfo(666);
+
+            // Execute uma cópia rasa de p1 e atribua-a a p2.
+            Person p2 = p1.ShallowCopy();
+            // Faça uma cópia profunda de p1 e atribua-a a p3.
+            Person p3 = p1.DeepCopy();
+
+            // Display values of p1, p2 and p3.
+            Console.WriteLine("Original values of p1, p2, p3:");
+            Console.WriteLine("   p1 valores de instância : ");
+            DisplayValues(p1);
+            Console.WriteLine("   p2 valores de instância:");
+            DisplayValues(p2);
+            Console.WriteLine("   p3 valores de instância:");
+            DisplayValues(p3);
+
+            // Altere o valor das propriedades p1 e exiba os valores de p1,
+            // p2 and p3.
+            p1.Idade = 32;
+            p1.Aniversario = Convert.ToDateTime("1900-01-01");
+            p1.Nome = "Frank";
+            p1.IdInfo.IdNumber = 7878;
+            Console.WriteLine("\nValores de p1, p2 e p3 após mudanças para p1:");
+            Console.WriteLine("   p1 valores de instância: ");
+            DisplayValues(p1);
+            Console.WriteLine("   p2 valores de instância (os valores de referência mudaram):");
+            DisplayValues(p2);
+            Console.WriteLine("   p3 valores de instância (tudo foi mantido o mesmo):");
+            DisplayValues(p3);
+
+            //Composite
+            Client2 client2 = new Client2();
+
+            // Desta forma, o código do cliente pode suportar a folha simples
+            // components...
+            Leaf leaf = new Leaf();
+            Console.WriteLine("Client: Eu recebo um componente simples:");
+            client2.ClientCode(leaf);
+
+            // ...bem como os compostos complexos.
+            Composite tree = new Composite();
+            Composite branch1 = new Composite();
+            branch1.Add(new Leaf());
+            branch1.Add(new Leaf());
+            Composite branch2 = new Composite();
+            branch2.Add(new Leaf());
+            tree.Add(branch1);
+            tree.Add(branch2);
+            Console.WriteLine("Client: Agora eu tenho uma árvore composta:");
+            client2.ClientCode(tree);
+
+            Console.Write("Client: Não preciso verificar as classes de componentes mesmo ao gerenciar a árvore:\n");
+            client2.ClientCode2(tree, leaf);
+        }
+        //prototype
+        public static void DisplayValues(Person p)
+        {
+            Console.WriteLine("      Nome: {0:s}, Idade: {1:d}, Aniversário: {2:MM/dd/yy}",
+                p.Nome, p.Idade, p.Aniversario);
+            Console.WriteLine("      ID#: {0:d}", p.IdInfo.IdNumber);
         }
     }
 }
