@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Proxy
+namespace Proxy_Visitor_State_AbstractFactory_Adapter
 {
     //proxy-------------------------
     // A interface Subject declara operações comuns para RealSubject e
